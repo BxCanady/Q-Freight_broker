@@ -21,7 +21,9 @@ export default function Header() {
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="p-3 bg-[#FF5722] text-white rounded-lg focus:outline-none hover:bg-[#e04d1d] transition-colors"
-          aria-label="Toggle Menu"
+          aria-label={isMenuOpen ? 'Close Menu' : 'Open Menu'}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
         >
           <svg
             className="w-6 h-6"
@@ -49,7 +51,10 @@ export default function Header() {
       </div>
 
       {isMenuOpen && (
-        <nav className="bg-white border-t border-gray-100 px-4 pt-2 pb-4 space-y-2">
+        <nav
+          id="mobile-menu"
+          className="bg-white border-t border-gray-100 px-4 pt-2 pb-4 space-y-2"
+        >
           <Link href="/" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
             Home
           </Link>
