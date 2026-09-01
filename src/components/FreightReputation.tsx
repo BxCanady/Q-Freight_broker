@@ -26,13 +26,13 @@ export default function FreightReputation() {
     <section className="bg-white py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mb-10 text-center">
-          <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-orange-500">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-[#E9652D]">
             Why Choose Us
           </p>
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-[#12343B] sm:text-4xl">
             Freight You Can Count On
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500">
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[#53706F]">
             From pickup to delivery, we connect shippers with reliable
             transportation solutions that keep freight moving.
           </p>
@@ -45,15 +45,15 @@ export default function FreightReputation() {
             return (
               <div
                 key={feature.title}
-                className="group rounded-lg border border-slate-200 bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-orange-200 hover:shadow-lg"
+                className="group rounded-lg border border-[#D8E2DF] bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg"
               >
-                <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-md bg-orange-50">
-                  <Icon className="h-5 w-5 text-orange-500" strokeWidth={2} />
+                <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-md bg-[#FFF0E8]">
+                  <Icon className="h-5 w-5 text-[#E9652D]" strokeWidth={2} />
                 </div>
-                <h3 className="text-base font-semibold text-slate-800">
+                <h3 className="text-base font-semibold text-[#12343B]">
                   {feature.title}
                 </h3>
-                <p className="mt-2 text-sm leading-5 text-slate-500">
+                <p className="mt-2 text-sm leading-5 text-[#53706F]">
                   {feature.description}
                 </p>
               </div>

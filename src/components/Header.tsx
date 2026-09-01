@@ -12,10 +12,10 @@ export default function Header() {
         
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#FF5722] rounded-tl-xl rounded-br-xl flex items-center justify-center">
+          <div className="w-8 h-8 bg-[#E9652D] rounded-tl-xl rounded-br-xl flex items-center justify-center">
             <span className="text-white font-bold text-lg">T</span>
           </div>
-          <span className="text-2xl font-extrabold text-[#0D233A] tracking-tight">
+          <span className="text-2xl font-extrabold text-[#12343B] tracking-tight">
             Togeto
           </span>
         </Link>
@@ -23,7 +23,7 @@ export default function Header() {
         {/* Mobile / Hamburger Menu Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="p-3 bg-[#FF5722] text-white rounded-lg focus:outline-none hover:bg-[#e04d1d] transition-colors"
+          className="p-3 bg-[#E9652D] text-white rounded-lg focus:outline-none hover:bg-[#C95120] transition-colors"
           aria-label="Toggle Menu"
         >
           <svg
@@ -54,16 +54,16 @@ export default function Header() {
       {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
         <nav className="bg-white border-t border-gray-100 px-4 pt-2 pb-4 space-y-2">
-          <Link href="/" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
+          <Link href="/" className="block py-2 text-[#12343B] font-medium hover:text-[#E9652D]">
             Home
           </Link>
-          <Link href="/about" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
+          <Link href="/about" className="block py-2 text-[#12343B] font-medium hover:text-[#E9652D]">
             About Us
           </Link>
-          <Link href="/services" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
+          <Link href="/services" className="block py-2 text-[#12343B] font-medium hover:text-[#E9652D]">
             Services
           </Link>
-          <Link href="/contact" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
+          <Link href="/contact" className="block py-2 text-[#12343B] font-medium hover:text-[#E9652D]">
             Contact
           </Link>
         </nav>
