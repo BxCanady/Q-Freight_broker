@@ -20,7 +20,7 @@ export default function Header() {
 
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="p-3 bg-[#FF5722] text-white rounded-lg focus:outline-none hover:bg-[#e04d1d] transition-colors"
+          className="p-3 bg-[#FF5722] text-white rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#FF5722] hover:bg-[#e04d1d] transition-colors"
           aria-label={isMenuOpen ? 'Close Menu' : 'Open Menu'}
           aria-expanded={isMenuOpen}
           aria-controls="mobile-menu"
@@ -30,6 +30,7 @@ export default function Header() {
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             {isMenuOpen ? (
               <path
@@ -50,25 +51,24 @@ export default function Header() {
         </button>
       </div>
 
-      {isMenuOpen && (
-        <nav
-          id="mobile-menu"
-          className="bg-white border-t border-gray-100 px-4 pt-2 pb-4 space-y-2"
-        >
-          <Link href="/" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
-            Home
-          </Link>
-          <Link href="/about" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
-            About Us
-          </Link>
-          <Link href="/services" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
-            Services
-          </Link>
-          <Link href="/contact" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
-            Contact
-          </Link>
-        </nav>
-      )}
+      <nav
+        id="mobile-menu"
+        hidden={!isMenuOpen}
+        className="bg-white border-t border-gray-100 px-4 pt-2 pb-4 space-y-2"
+      >
+        <Link href="/" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
+          Home
+        </Link>
+        <Link href="/about" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
+          About Us
+        </Link>
+        <Link href="/services" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
+          Services
+        </Link>
+        <Link href="/contact" className="block py-2 text-gray-700 font-medium hover:text-[#FF5722]">
+          Contact
+        </Link>
+      </nav>
     </header>
   );
 }
