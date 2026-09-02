@@ -1,4 +1,5 @@
 import FreightReputation from "@/components/FreightReputation";
+import FreightServices from "@/components/FreightServices";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
           Welcome to Togeto
         </h1>
       </div>
+      <FreightServices />
       <FreightReputation />
     </main>
   );
