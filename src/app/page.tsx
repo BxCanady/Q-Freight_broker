@@ -6,7 +6,7 @@ export default function Home() {
     <main className="flex flex-1 flex-col bg-[#F7FAF9] font-sans">
       <div className="flex flex-1 items-center justify-center">
         <h1 className="text-3xl font-semibold text-[#12343B]">
-          Welcome to Togeto
+          Welcome to rcs3pl.com
         </h1>
       </div>
       <FreightServices />
