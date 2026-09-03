@@ -37,12 +37,12 @@ export default function FreightServices() {
 
   return (
     <section
-      className="relative overflow-hidden rounded-2xl bg-cover bg-center py-24 px-8 lg:px-16 xl:px-24"
+      className="relative overflow-hidden rounded-2xl bg-cover bg-center px-4 py-16 sm:px-8 sm:py-24 lg:px-16 xl:px-24"
       style={{ backgroundImage: "url('/fs_bg.jfif')" }}
     >
-      <div className="absolute inset-0 bg-red-25/65" aria-hidden="true" />
+      <div className="absolute inset-0 bg-red-50/65" aria-hidden="true" />
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="grid lg:grid-cols-[1fr_2fr] gap-16 items-start">
+        <div className="grid gap-10 lg:grid-cols-[1fr_2fr] lg:gap-16">
           {/* Left sticky label */}
           <div className="lg:sticky lg:top-24">
             <div className="flex items-center gap-3 mb-5">
@@ -55,7 +55,7 @@ export default function FreightServices() {
               </span>
             </div>
             <h2
-              className="font-[family-name:var(--font-display)] font-black text-5xl xl:text-6xl leading-[0.92] mb-6"
+              className="mb-6 font-[family-name:var(--font-display)] text-4xl font-black leading-[0.92] sm:text-5xl xl:text-6xl"
               style={{
                 color: "var(--brand-orange)",
                 WebkitTextStroke: "1px white",
@@ -74,14 +74,14 @@ export default function FreightServices() {
           {/* Tab + card area */}
           <div>
             <div
-              className="flex gap-1 mb-8 border-b"
+              className="mb-8 flex gap-1 overflow-x-auto border-b pb-px [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               style={{ borderColor: "rgba(18,52,59,0.12)" }}
             >
               {SERVICES.map((svc, i) => (
                 <button
                   key={svc.code}
                   onClick={() => handleServiceTabClick(i, svc.code)}
-                  className="text-sm font-bold tracking-[0.15em] uppercase px-5 py-3 border-b-2 transition-all duration-200"
+                  className="shrink-0 whitespace-nowrap px-3 py-3 text-xs font-bold uppercase tracking-[0.12em] transition-all duration-200 sm:px-5 sm:text-sm sm:tracking-[0.15em]"
                   style={{
                     WebkitTextStroke: "0.6px white",
                     borderColor:
@@ -105,7 +105,7 @@ export default function FreightServices() {
                   key={svc.code}
                   id={`service-${svc.code.toLowerCase().replaceAll(" ", "-")}`}
                   onClick={() => setActiveService(i)}
-                  className="text-left p-6 border transition-all duration-200 group"
+                  className="group border p-4 text-left transition-all duration-200 sm:p-6"
                   style={{
                     borderColor:
                       activeService === i
@@ -118,9 +118,9 @@ export default function FreightServices() {
                   }}
                 >
                   <div className="flex items-start justify-between mb-2">
-                    <div className="flex items-center gap-4">
+                    <div className="flex min-w-0 items-center gap-3 sm:gap-4">
                       <span
-                        className="text-xs font-bold tracking-widest uppercase px-2 py-1"
+                        className="shrink-0 px-2 py-1 text-[10px] font-bold uppercase tracking-widest sm:text-xs"
                         style={{
                           background:
                             activeService === i
@@ -135,7 +135,7 @@ export default function FreightServices() {
                         {svc.code}
                       </span>
                       <span
-                        className="font-[family-name:var(--font-display)] font-bold text-xl transition-colors"
+                        className="font-[family-name:var(--font-display)] text-base font-bold leading-tight transition-colors sm:text-xl"
                         style={{ color: "var(--brand-deep-teal)" }}
                       >
                         {svc.title}
@@ -143,7 +143,7 @@ export default function FreightServices() {
                     </div>
                     <svg
                       viewBox="0 0 24 24"
-                      className="w-4 h-4 transition-transform duration-200 flex-shrink-0"
+                      className="h-4 w-4 shrink-0 transition-transform duration-200"
                       style={{
                         color:
                           activeService === i
@@ -167,7 +167,7 @@ export default function FreightServices() {
                   </div>
                   {activeService === i && (
                     <p
-                      className="text-sm font-light leading-relaxed pl-[calc(2rem+1rem)] opacity-70"
+                      className="pl-0 text-sm font-light leading-relaxed opacity-70 sm:pl-[calc(2rem+1rem)]"
                       style={{ color: "var(--brand-deep-teal)" }}
                     >
                       {svc.desc}
