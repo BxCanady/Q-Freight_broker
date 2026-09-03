@@ -28,13 +28,6 @@ const SERVICES = [
 export default function FreightServices() {
   const [activeService, setActiveService] = useState(0);
 
-  const handleServiceTabClick = (index: number, code: string) => {
-    setActiveService(index);
-    document
-      .getElementById(`service-${code.toLowerCase().replaceAll(" ", "-")}`)
-      ?.scrollIntoView({ behavior: "smooth", block: "center" });
-  };
-
   return (
     <section
       className="relative overflow-hidden rounded-2xl bg-cover bg-center px-4 py-16 sm:px-8 sm:py-24 lg:px-16 xl:px-24"
@@ -74,13 +67,13 @@ export default function FreightServices() {
           {/* Tab + card area */}
           <div>
             <div
-              className="mb-8 flex gap-1 overflow-x-auto border-b pb-px [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              className="mb-8 hidden gap-1 overflow-x-auto border-b pb-px [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex"
               style={{ borderColor: "rgba(18,52,59,0.12)" }}
             >
               {SERVICES.map((svc, i) => (
                 <button
                   key={svc.code}
-                  onClick={() => handleServiceTabClick(i, svc.code)}
+                  onClick={() => setActiveService(i)}
                   className="shrink-0 whitespace-nowrap px-3 py-3 text-xs font-bold uppercase tracking-[0.12em] transition-all duration-200 sm:px-5 sm:text-sm sm:tracking-[0.15em]"
                   style={{
                     WebkitTextStroke: "0.6px white",
@@ -105,7 +98,7 @@ export default function FreightServices() {
                   key={svc.code}
                   id={`service-${svc.code.toLowerCase().replaceAll(" ", "-")}`}
                   onClick={() => setActiveService(i)}
-                  className="group border p-4 text-left transition-all duration-200 sm:p-6"
+                  className="group min-w-0 border p-4 text-left transition-all duration-200 sm:p-6"
                   style={{
                     borderColor:
                       activeService === i
@@ -135,7 +128,7 @@ export default function FreightServices() {
                         {svc.code}
                       </span>
                       <span
-                        className="font-[family-name:var(--font-display)] text-base font-bold leading-tight transition-colors sm:text-xl"
+                        className="min-w-0 break-words font-[family-name:var(--font-display)] text-base font-bold leading-tight transition-colors sm:text-xl"
                         style={{ color: "var(--brand-deep-teal)" }}
                       >
                         {svc.title}
