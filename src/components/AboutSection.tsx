@@ -1,10 +1,25 @@
+import Image from "next/image";
+
 export default function AboutSection() {
   return (
     <section
       id="about"
-      className="bg-gradient-to-b from-white to-[#F7FAF9] px-6 py-24 sm:px-8 lg:px-16 xl:px-24"
+      className="relative my-12 overflow-hidden rounded-2xl bg-gradient-to-b from-white to-[#F7FAF9] px-6 py-20 shadow-[0_24px_60px_rgba(17,30,56,0.1)] sm:px-8 sm:py-24 lg:px-16 xl:px-24"
     >
       <div className="mx-auto max-w-7xl">
+        <div className="mb-16 flex justify-center">
+          <div className="relative h-28 w-28 overflow-hidden rounded-full bg-white shadow-[0_14px_30px_rgba(17,30,56,0.18)] ring-1 ring-[#D8E2DF] sm:h-36 sm:w-36">
+            <Image
+              src="/logo1.1.jfif"
+              alt="Raheem Cargo Solutions LLC logo"
+              fill
+              sizes="(min-width: 640px) 144px, 112px"
+              priority
+              className="object-cover"
+            />
+          </div>
+        </div>
+
         <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
           <div>
             <div className="mb-5 flex items-center gap-3">
@@ -27,7 +42,7 @@ export default function AboutSection() {
         </div>
 
         <div className="mt-16 grid gap-4 md:grid-cols-2">
-          <article className="rounded-xl border border-[#D8E2DF] bg-white p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-transform hover:-translate-y-1">
+          <article className="rounded-xl border border-[#D8E2DF] bg-white/90 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
             <span className="text-sm font-bold text-[#B85223]">01</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Hands-on transportation experience
@@ -37,7 +52,7 @@ export default function AboutSection() {
               both a company driver and an owner-operator.
             </p>
           </article>
-          <article className="rounded-xl border border-[#D8E2DF] bg-white p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-transform hover:-translate-y-1">
+          <article className="rounded-xl border border-[#D8E2DF] bg-white/90 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
             <span className="text-sm font-bold text-[#B85223]">02</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Direct market advantage
@@ -47,7 +62,7 @@ export default function AboutSection() {
               experience, not generic marketing research algorithms.
             </p>
           </article>
-          <article className="rounded-xl border border-[#D8E2DF] bg-white p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-transform hover:-translate-y-1">
+          <article className="rounded-xl border border-[#D8E2DF] bg-white/90 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
             <span className="text-sm font-bold text-[#B85223]">03</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Guaranteed asset capacity
@@ -57,7 +72,7 @@ export default function AboutSection() {
               help loads get picked up immediately.
             </p>
           </article>
-          <article className="rounded-xl border border-[#D8E2DF] bg-white p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-transform hover:-translate-y-1">
+          <article className="rounded-xl border border-[#D8E2DF] bg-white/90 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
             <span className="text-sm font-bold text-[#B85223]">04</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Commitment to quality

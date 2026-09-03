@@ -4,34 +4,36 @@ import { useState } from "react";
 
 const SERVICES = [
   {
-    code: "FTL",
-    title: "Full Truckload",
-    desc: "Dedicated trailer space for large shipments moving direct from origin to destination without stops or transfers.",
-  },
-  {
-    code: "LTL",
-    title: "Less Than Truckload",
-    desc: "Cost-effective shipping for smaller loads that share trailer space with other freight on the same route.",
-  },
-  {
     code: "REEFER",
-    title: "Refrigerated Freight",
-    desc: "Temperature-controlled trailers for perishable goods, ensuring your cargo stays within spec from pickup to delivery.",
+    title: "Reefer Services",
+    desc: "Temperature-controlled refrigerated trailers for products that require dependable cold-chain handling.",
   },
   {
     code: "FLATBED",
     title: "Flatbed & Heavy Haul",
-    desc: "Open-deck and specialized equipment for oversized, overweight, or irregularly shaped freight.",
+    desc: "Standard flatbeds, step-decks, and specialized open-deck equipment for oversized and irregular freight.",
   },
   {
-    code: "INTERMODAL",
-    title: "Intermodal & Rail",
-    desc: "Combining rail and truck transport for long-haul efficiency and reduced cost on high-volume lanes.",
+    code: "POWER ONLY",
+    title: "Power-Only Solutions",
+    desc: "Dedicated power units to move customer-owned trailing equipment when and where it is needed.",
+  },
+  {
+    code: "LIQUID BULK",
+    title: "Specialized Liquid Bulk",
+    desc: "Transport capabilities for crude oil, liquefied petroleum gas (LPG), and hazardous materials.",
   },
 ];
 
 export default function FreightServices() {
   const [activeService, setActiveService] = useState(0);
+
+  const handleServiceTabClick = (index: number, code: string) => {
+    setActiveService(index);
+    document
+      .getElementById(`service-${code.toLowerCase().replaceAll(" ", "-")}`)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   return (
     <section
@@ -48,7 +50,7 @@ export default function FreightServices() {
                 className="w-8 h-px"
                 style={{ background: "var(--brand-orange)" }}
               />
-              <span className="text-xs font-semibold tracking-[0.25em] uppercase shadow-md text-red-600 shadow-md ">
+              <span className="text-xs font-semibold tracking-[0.25em] uppercase text-red-600 shadow-md">
                 What We Move
               </span>
             </div>
@@ -63,9 +65,9 @@ export default function FreightServices() {
               <br />
               SERVICES
             </h2>
-            <p className="text-sm font-light leading-relaxed max-w-xs text-red-600 shadow-md ">
-              Every mode, every commodity, every lane. We handle the complexity
-              so your freight arrives on time and on budget.
+            <p className="text-sm font-medium leading-relaxed text-red-600 shadow-md">
+              Asset-backed freight brokerage for dependable capacity across
+              general, specialized, and high-consequence logistics.
             </p>
           </div>
 
@@ -78,8 +80,8 @@ export default function FreightServices() {
               {SERVICES.map((svc, i) => (
                 <button
                   key={svc.code}
-                  onClick={() => setActiveService(i)}
-                  className="text-sm md:text-basefont-bold tracking-[0.15em] uppercase px-5 py-3 border-b-2 transition-all duration-200"
+                  onClick={() => handleServiceTabClick(i, svc.code)}
+                  className="text-sm font-bold tracking-[0.15em] uppercase px-5 py-3 border-b-2 transition-all duration-200"
                   style={{
                     WebkitTextStroke: "0.6px white",
                     borderColor:
@@ -101,6 +103,7 @@ export default function FreightServices() {
               {SERVICES.map((svc, i) => (
                 <button
                   key={svc.code}
+                  id={`service-${svc.code.toLowerCase().replaceAll(" ", "-")}`}
                   onClick={() => setActiveService(i)}
                   className="text-left p-6 border transition-all duration-200 group"
                   style={{
