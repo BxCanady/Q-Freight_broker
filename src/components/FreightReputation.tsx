@@ -99,7 +99,7 @@ export default function FreightReputation() {
               Licensed Freight Brokerage | SBA Registered | MBE Certified
             </p>
             <a
-              href="https://www.linkedin.com/in/quintin-galloway-675b922b9/"
+              href="https://www.linkedin.com/in/quintin-galloway-675b922b9/?skipRedirect=true"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-3 inline-block font-semibold text-[#F4B395] transition-colors hover:text-white"

@@ -137,7 +137,7 @@ export default function AboutSection() {
         <div className="mt-20 grid gap-10 rounded-2xl bg-[#12343B] p-8 text-white shadow-[0_20px_45px_rgba(18,52,59,0.18)] sm:p-10 lg:grid-cols-[0.8fr_1.2fr] lg:p-12">
           <div>
             <a
-              href="https://www.linkedin.com/in/quintin-galloway-675b922b9/"
+              href="https://www.linkedin.com/in/quintin-galloway-675b922b9/?skipRedirect=true"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="View Quint Galloway on LinkedIn"

@@ -1,0 +1,13 @@
+
+> q-freight-broker@0.1.0 dev
+> next dev
+
+▲ Next.js 16.3.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.104:3000
+- Environments: .env.local
+✓ Ready in 1125ms
+✓ Running next.config.ts took 69ms
+
+ GET / 200 in 1035ms (next.js: 387ms, application-code: 648ms)
+ GET / 200 in 238ms (next.js: 22ms, application-code: 216ms)

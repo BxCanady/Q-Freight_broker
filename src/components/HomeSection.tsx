@@ -42,25 +42,31 @@ export default function HomeSection() {
     <>
       <section
         id="home"
-        className="section-reveal relative flex min-h-[32rem] flex-1 items-center justify-center overflow-hidden bg-cover bg-center"
+        className="section-reveal relative flex min-h-[36rem] flex-1 items-center justify-center overflow-hidden bg-cover bg-center py-16"
         style={{ backgroundImage: "url('/home_bg.jfif')" }}
       >
-        <div className="absolute inset-0 bg-[#12343B]/50" aria-hidden="true" />
+        {/* Dark Navy Glassmorphism Overlay matched to RCS Brand Navy (#1B2A4A) */}
+        <div className="absolute inset-0 bg-[#1B2A4A]/40" aria-hidden="true" />
+
         <motion.div
           className="relative z-10 w-full max-w-6xl px-6 text-center"
           initial="hidden"
           animate="visible"
           transition={{ staggerChildren: 0.12 }}
         >
+          {/* Orange, Blue, Gray & Red Title */}
           <motion.h1
-            className="font-[family-name:var(--font-display)] text-4xl font-black leading-[0.95] sm:text-5xl lg:text-6xl bg-gradient-to-b from-amber-200 via-orange-500 to-amber-700 bg-clip-text text-transparent drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] [webkit-text-stroke:1px_white]"
+            className="font-[family-name:var(--font-display)] text-4xl font-black leading-[0.95] sm:text-5xl lg:text-6xl bg-[linear-gradient(to_bottom,#F97316_0%,#93C5FD_35%,#CBD5E1_65%,#DC2626_100%)] bg-clip-text text-transparent drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)]"
+            style={{ WebkitTextStroke: "1px #ffffff" }}
             variants={fadeUp}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             Welcome to Raheem Cargo Solutions LLC (RCS)
           </motion.h1>
+
+          {/* Sparkle Subtitle */}
           <motion.p
-            className="relative inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-amber-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:text-base"
+            className="relative mt-4 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-[#E57A3B] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:text-base"
             variants={fadeUp}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
@@ -71,13 +77,20 @@ export default function HomeSection() {
                 opacity: [0.6, 1, 0.6],
                 rotate: [0, 15, -15, 0],
               }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="text-white/800"
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="text-[#CBD5E1]"
             >
               ✨
             </motion.span>
 
-            <span className="drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
+            <span
+              className="bg-gradient-to-r from-[#93C5FD] via-[#CBD5E1] to-[#DC2626] bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+              style={{ WebkitTextStroke: "0.5px #ffffff" }}
+            >
               Asset-Backed Freight Brokerage &amp; Specialized Logistics
             </span>
 
@@ -94,33 +107,50 @@ export default function HomeSection() {
                 ease: "easeInOut",
                 delay: 0.5,
               }}
-              className="text-amber-400"
+              className="text-[#CBD5E1]"
             >
               ✨
             </motion.span>
           </motion.p>
-          <div className="mx-auto mt-10 grid max-w-5xl gap-3 text-left sm:grid-cols-2 lg:grid-cols-4">
-            {HERO_BADGES.map((badge) => {
-              const Icon = badge.icon;
 
-              return (
-                <motion.div
-                  key={badge.title}
-                  className="rounded-xl border border-white/25 bg-[var(--brand-navy)]/20 p-4 text-white shadow-lg backdrop-blur-sm"
-                  variants={fadeUp}
-                  transition={{ duration: 0.55, ease: "easeOut" }}
+          {/* Trust Badges */}
+          <div className="mx-auto mt-10 flex max-w-5xl flex-col gap-6 sm:flex-row sm:items-stretch sm:justify-center sm:gap-28">
+            {[HERO_BADGES.slice(0, 2), HERO_BADGES.slice(2, 4)].map(
+              (group, groupIndex) => (
+                <div
+                  key={groupIndex}
+                  className="grid flex-1 grid-cols-2 gap-4 text-left"
                 >
-                  <Icon className="h-6 w-6 text-[#F4B395]" strokeWidth={2} />
-                  <h2 className="mt-3 text-sm font-bold">{badge.title}</h2>
-                  <p className="mt-1 text-xs leading-5 text-white/75">
-                    {badge.description}
-                  </p>
-                </motion.div>
-              );
-            })}
+                  {group.map((badge) => {
+                    const Icon = badge.icon;
+
+                    return (
+                      <motion.div
+                        key={badge.title}
+                        whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                        className="group rounded-xl border border-white/20 bg-[#1B2A4A]/60 p-5 text-white shadow-xl backdrop-blur-md transition-all hover:border-[#E57A3B]/60 hover:bg-[#1B2A4A]/80 hover:shadow-2xl hover:shadow-[#E57A3B]/10"
+                        variants={fadeUp}
+                        transition={{ duration: 0.55, ease: "easeOut" }}
+                      >
+                        <div className="inline-flex rounded-lg border border-[#E57A3B]/30 bg-[#C25E28]/10 p-2 text-[#E57A3B] transition-colors group-hover:border-[#E57A3B] group-hover:bg-[#C25E28]/20 group-hover:text-white">
+                          <Icon className="h-6 w-6" strokeWidth={2} />
+                        </div>
+                        <h2 className="mt-3 text-sm font-bold tracking-wide text-white">
+                          {badge.title}
+                        </h2>
+                        <p className="mt-1 text-xs leading-5 text-slate-300">
+                          {badge.description}
+                        </p>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              ),
+            )}
           </div>
         </motion.div>
       </section>
+
       <div className="relative z-10 mx-4 sm:mx-8 lg:mx-16 xl:mx-24">
         <FreightServices />
       </div>

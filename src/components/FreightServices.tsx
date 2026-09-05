@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import Image from "next/image";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 interface Service {
   code: string;
@@ -69,6 +70,20 @@ export default function FreightServices() {
   const [formState, setFormState] = useState<FormState>(emptyForm);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isCursorVisible, setIsCursorVisible] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const cursorX = useMotionValue(0);
+  const cursorY = useMotionValue(0);
+  const springX = useSpring(cursorX, { stiffness: 300, damping: 30 });
+  const springY = useSpring(cursorY, { stiffness: 300, damping: 30 });
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 768px)");
+    const updateIsDesktop = () => setIsDesktop(query.matches);
+    updateIsDesktop();
+    query.addEventListener("change", updateIsDesktop);
+    return () => query.removeEventListener("change", updateIsDesktop);
+  }, []);
 
   useEffect(() => {
     if (!selectedService) return;
@@ -134,6 +149,13 @@ export default function FreightServices() {
       id="services"
       className="section-reveal relative overflow-hidden rounded-2xl bg-cover bg-center px-4 py-16 sm:px-8 sm:py-24 lg:px-16 xl:px-24"
       style={{ backgroundImage: "url('/fs_bg.jfif')" }}
+      onMouseMove={(event) => {
+        const bounds = event.currentTarget.getBoundingClientRect();
+        cursorX.set(event.clientX - bounds.left);
+        cursorY.set(event.clientY - bounds.top);
+      }}
+      onMouseEnter={() => setIsCursorVisible(true)}
+      onMouseLeave={() => setIsCursorVisible(false)}
     >
       <div
         className="absolute inset-0 bg-slate-950/80 backdrop-blur-xs"
@@ -157,6 +179,37 @@ export default function FreightServices() {
             Asset-backed freight brokerage providing dependable capacity for
             general, specialized, and high-consequence logistics.
           </p>
+          <motion.span
+            className={
+              isDesktop
+                ? "pointer-events-none absolute z-20 inline-flex items-center gap-2 rounded-full bg-orange-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white shadow-lg"
+                : "mt-5 inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-400"
+            }
+            style={
+              isDesktop
+                ? {
+                    left: springX,
+                    top: springY,
+                    transform: "translate(-50%, -50%)",
+                  }
+                : undefined
+            }
+            animate={
+              isDesktop
+                ? {
+                    opacity: isCursorVisible ? 1 : 0,
+                    scale: isCursorVisible ? 1 : 0.8,
+                  }
+                : { y: [0, -8, 0] }
+            }
+            transition={
+              isDesktop
+                ? { duration: 0.2 }
+                : { duration: 3, repeat: Infinity, ease: "easeInOut" }
+            }
+          >
+            We can Move Anything <span aria-hidden="true">→</span>
+          </motion.span>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
