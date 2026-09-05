@@ -56,3 +56,8 @@
  GET / 200 in 120ms (next.js: 26ms, application-code: 94ms)
  GET / 200 in 51ms (next.js: 10ms, application-code: 41ms)
  GET / 200 in 100ms (next.js: 10ms, application-code: 90ms)
+✓ Compiled in 62ms
+ GET / 200 in 84ms (next.js: 15ms, application-code: 69ms)
+ GET / 200 in 39ms (next.js: 7ms, application-code: 32ms)
+ GET /api/scrape 200 in 433ms (next.js: 229ms, application-code: 205ms)
+ GET /api/scrape 200 in 60ms (next.js: 7ms, application-code: 53ms)
