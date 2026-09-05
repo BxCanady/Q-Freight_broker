@@ -1,8 +1,19 @@
 "use client";
 
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 
 interface Service {
   code: string;
@@ -63,6 +74,14 @@ const SERVICES: Service[] = [
 type FormState = { name: string; email: string; phone: string; notes: string };
 const emptyForm: FormState = { name: "", email: "", phone: "", notes: "" };
 
+/** Mirrors the server-side inquirySchema limits in src/lib/mailer.ts. */
+const FIELD_LIMITS = {
+  name: 100,
+  email: 255,
+  phone: 30,
+  notes: 5000,
+} as const;
+
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function FreightServices() {
@@ -72,6 +91,7 @@ export default function FreightServices() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isCursorVisible, setIsCursorVisible] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const modalRef = useRef<HTMLDivElement | null>(null);
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
   const springX = useSpring(cursorX, { stiffness: 300, damping: 30 });
@@ -87,13 +107,39 @@ export default function FreightServices() {
 
   useEffect(() => {
     if (!selectedService) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setSelectedService(null);
     };
+
+    let mouseDownOnBackdrop = false;
+    const handleMouseDown = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        mouseDownOnBackdrop = true;
+      }
+    };
+    const handleMouseUp = (event: MouseEvent) => {
+      if (
+        mouseDownOnBackdrop &&
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setSelectedService(null);
+      }
+      mouseDownOnBackdrop = false;
+    };
+
     document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mouseup", handleMouseUp);
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mouseup", handleMouseUp);
       document.body.style.overflow = "";
     };
   }, [selectedService]);
@@ -107,15 +153,39 @@ export default function FreightServices() {
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
+    const limit = FIELD_LIMITS[event.target.name as keyof typeof FIELD_LIMITS];
     setFormState((current) => ({
       ...current,
-      [event.target.name]: event.target.value,
+      [event.target.name]: limit
+        ? event.target.value.slice(0, limit)
+        : event.target.value,
     }));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!selectedService) return;
+
+    const trimmed: FormState = {
+      name: formState.name.trim(),
+      email: formState.email.trim(),
+      phone: formState.phone.trim(),
+      notes: formState.notes.trim(),
+    };
+
+    if (!trimmed.name || !trimmed.email || !trimmed.phone) {
+      setStatus("error");
+      setErrorMessage(
+        "Please fill in your name, work email, and phone number.",
+      );
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed.email)) {
+      setStatus("error");
+      setErrorMessage("Please provide a valid email address.");
+      return;
+    }
+
     setStatus("loading");
     setErrorMessage("");
     try {
@@ -123,7 +193,7 @@ export default function FreightServices() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...formState,
+          ...trimmed,
           serviceCode: selectedService.code,
           serviceTitle: selectedService.title,
         }),
@@ -164,13 +234,13 @@ export default function FreightServices() {
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mb-12 max-w-2xl">
           <div className="mb-4 flex items-center gap-3">
-            <div className="h-0.5 w-8 bg-orange-400" />
-            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-orange-400">
+            <div className="h-0.5 w-8 bg-[#E57A3B]" />
+            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#E57A3B]">
               What We Move
             </span>
           </div>
           <h2
-            className="font-[family-name:var(--font-display)] text-4xl font-black uppercase leading-none text-orange-400 sm:text-5xl lg:text-6xl"
+            className="font-[family-name:var(--font-display)] text-4xl font-black uppercase leading-none bg-gradient-to-b from-[#CBD5E1] via-[#E57A3B] to-[#8B3C14] bg-clip-text text-transparent drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl"
             style={{ WebkitTextStroke: "1px white" }}
           >
             Freight Services
@@ -182,8 +252,8 @@ export default function FreightServices() {
           <motion.span
             className={
               isDesktop
-                ? "pointer-events-none absolute z-20 inline-flex items-center gap-2 rounded-full bg-orange-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white shadow-lg"
-                : "mt-5 inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-400"
+                ? "pointer-events-none absolute z-20 inline-flex items-center gap-2 rounded-full bg-[#E57A3B] px-4 py-2 text-xs font-bold uppercase tracking-widest text-white shadow-lg"
+                : "mt-5 inline-flex items-center gap-2 rounded-full border border-[#E57A3B]/30 bg-[#E57A3B]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#E57A3B]"
             }
             style={
               isDesktop
@@ -218,13 +288,14 @@ export default function FreightServices() {
               type="button"
               key={service.code}
               onClick={() => openService(service)}
-              className="mobile-service-card group relative flex min-h-64 flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-slate-900/90 p-6 text-left shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-orange-500/50 hover:shadow-2xl"
+              className="mobile-service-card group relative flex min-h-64 flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-[#1B2A4A]/90 p-6 text-left shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#E57A3B]/50 hover:shadow-2xl"
             >
+              {/* Increased opacity to 70%, enhanced contrast/brightness, and softened the color burn gradient overlay */}
               <div
-                className="absolute inset-0 bg-cover bg-center opacity-50 transition-transform duration-500 group-hover:scale-105"
+                className="absolute inset-0 bg-cover bg-center opacity-70 contrast-125 brightness-110 transition-transform duration-500 group-hover:scale-105"
                 style={{ backgroundImage: `url(${service.bgImage})` }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#152238]/95 via-[#1B2A4A]/50 to-transparent" />
               <div className="absolute right-4 top-4 z-10 h-14 w-14 transition-transform duration-300 drop-shadow-[0_4px_8px_rgba(0,0,0,0.45)] group-hover:scale-105 sm:h-16 sm:w-16">
                 <Image
                   src="/logo1.1.png"
@@ -235,18 +306,18 @@ export default function FreightServices() {
                 />
               </div>
               <div className="relative z-10">
-                <span className="inline-block rounded-md border border-orange-500/30 bg-orange-500/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-orange-400">
+                <span className="inline-block rounded-md border border-[#E57A3B]/30 bg-[#E57A3B]/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
                   {service.code}
                 </span>
-                <h3 className="mt-4 text-xl font-bold text-white transition-colors group-hover:text-orange-400">
+                <h3 className="mt-4 text-xl font-bold text-white transition-colors group-hover:text-[#E57A3B]">
                   {service.title}
                 </h3>
-                <p className="mt-2 text-xs leading-relaxed text-slate-300">
+                <p className="mt-2 text-xs leading-relaxed text-slate-200 drop-shadow">
                   {service.desc}
                 </p>
               </div>
-              <div className="relative z-10 mt-6 flex items-center gap-2 text-xs font-semibold text-orange-400">
-                <span>Request Capacity</span>
+              <div className="relative z-10 mt-6 flex items-center gap-2 text-xs font-semibold text-[#E57A3B]">
+                <span>Request Quote</span>
                 <span
                   aria-hidden="true"
                   className="text-base transition-transform group-hover:translate-x-1"
@@ -259,186 +330,200 @@ export default function FreightServices() {
         </div>
       </div>
 
-      {selectedService && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-950/80 p-4 backdrop-blur-md"
-          onClick={() => setSelectedService(null)}
-          role="presentation"
-        >
-          <div
-            className="relative my-8 flex w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl lg:flex-row"
-            onClick={(event) => event.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="service-modal-title"
+      {/* Modal with AnimatePresence & Outside Click Handling */}
+      <AnimatePresence>
+        {selectedService && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-950/80 p-4 backdrop-blur-md"
           >
-            <div
-              className="relative flex min-h-80 flex-col justify-between bg-cover bg-center p-6 lg:w-1/2 sm:p-8"
-              style={{ backgroundImage: `url(${selectedService.bgImage})` }}
+            <motion.div
+              ref={modalRef}
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="relative my-8 flex w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-slate-700 bg-[#1B2A4A] shadow-2xl lg:flex-row"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="service-modal-title"
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/60 to-slate-950/20" />
-              <div className="relative z-10">
-                <span className="inline-block rounded-md border border-orange-500/30 bg-orange-500/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-400">
-                  {selectedService.code}
-                </span>
-                <h3
-                  id="service-modal-title"
-                  className="mt-4 text-2xl font-extrabold text-white sm:text-3xl"
-                >
-                  {selectedService.title}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-300">
-                  {selectedService.longDesc}
-                </p>
-              </div>
-              <div className="relative z-10 mt-6 space-y-2">
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Key Capabilities
-                </p>
-                {selectedService.specs.map((spec) => (
-                  <div
-                    key={spec}
-                    className="flex items-center gap-2 text-xs font-medium text-slate-200"
+              <div className="relative flex min-h-80 flex-col justify-between overflow-hidden p-6 lg:w-1/2 sm:p-8">
+                {/* Clearer background image layer with dedicated image sharpness styling */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center contrast-125 brightness-105"
+                  style={{ backgroundImage: `url(${selectedService.bgImage})` }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#152238]/95 via-[#1B2A4A]/60 to-slate-950/20" />
+                <div className="relative z-10">
+                  <span className="inline-block rounded-md border border-[#E57A3B]/30 bg-[#E57A3B]/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#E57A3B]">
+                    {selectedService.code}
+                  </span>
+                  <h3
+                    id="service-modal-title"
+                    className="mt-4 text-2xl font-extrabold text-white sm:text-3xl"
                   >
-                    <span className="text-orange-400">✓</span>
-                    {spec}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="relative bg-slate-900 p-6 lg:w-1/2 sm:p-8">
-              <button
-                type="button"
-                onClick={() => setSelectedService(null)}
-                className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white"
-                aria-label="Close service inquiry"
-              >
-                ×
-              </button>
-              <h4 className="text-lg font-bold text-white">
-                Inquire About This Service
-              </h4>
-              <p className="mt-1 text-xs text-slate-400">
-                Direct route request for{" "}
-                <span className="font-semibold text-orange-400">
-                  {selectedService.title}
-                </span>
-                .
-              </p>
-              {status === "success" ? (
-                <div className="my-8 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center text-emerald-400">
-                  <p className="text-base font-bold">
-                    Inquiry Sent Successfully!
+                    {selectedService.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-200 drop-shadow">
+                    {selectedService.longDesc}
                   </p>
-                  <p className="mt-2 text-xs text-slate-300">
-                    Our freight dispatch team is reviewing your route
-                    requirements and will reply via email shortly.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedService(null)}
-                    className="mt-6 w-full rounded-lg bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-500"
-                  >
-                    Close Window
-                  </button>
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-                  <div>
-                    <label
-                      htmlFor="inquiry-name"
-                      className="block text-xs font-semibold uppercase text-slate-300"
+                <div className="relative z-10 mt-6 space-y-2">
+                  <p className="text-xs font-bold uppercase tracking-wider text-slate-300">
+                    Key Capabilities
+                  </p>
+                  {selectedService.specs.map((spec) => (
+                    <div
+                      key={spec}
+                      className="flex items-center gap-2 text-xs font-medium text-white drop-shadow"
                     >
-                      Full Name
-                    </label>
-                    <input
-                      id="inquiry-name"
-                      type="text"
-                      name="name"
-                      required
-                      value={formState.name}
-                      onChange={handleInputChange}
-                      placeholder="Jane Doe"
-                      className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-800 p-2.5 text-xs text-white placeholder-slate-500 focus:border-orange-500 focus:outline-none"
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div>
-                      <label
-                        htmlFor="inquiry-email"
-                        className="block text-xs font-semibold uppercase text-slate-300"
-                      >
-                        Work Email
-                      </label>
-                      <input
-                        id="inquiry-email"
-                        type="email"
-                        name="email"
-                        required
-                        value={formState.email}
-                        onChange={handleInputChange}
-                        placeholder="jane@company.com"
-                        className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-800 p-2.5 text-xs text-white placeholder-slate-500 focus:border-orange-500 focus:outline-none"
-                      />
+                      <span className="text-[#E57A3B]">✓</span>
+                      {spec}
                     </div>
-                    <div>
-                      <label
-                        htmlFor="inquiry-phone"
-                        className="block text-xs font-semibold uppercase text-slate-300"
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        id="inquiry-phone"
-                        type="tel"
-                        name="phone"
-                        required
-                        value={formState.phone}
-                        onChange={handleInputChange}
-                        placeholder="(555) 000-0000"
-                        className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-800 p-2.5 text-xs text-white placeholder-slate-500 focus:border-orange-500 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="inquiry-notes"
-                      className="block text-xs font-semibold uppercase text-slate-300"
-                    >
-                      Route &amp; Cargo Details
-                    </label>
-                    <textarea
-                      id="inquiry-notes"
-                      name="notes"
-                      rows={3}
-                      value={formState.notes}
-                      onChange={handleInputChange}
-                      placeholder="Origin, destination, estimated weight, temperature constraints..."
-                      className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-800 p-2.5 text-xs text-white placeholder-slate-500 focus:border-orange-500 focus:outline-none"
-                    />
-                  </div>
-                  {status === "error" && (
-                    <p className="text-xs font-semibold text-red-400">
-                      {errorMessage ||
-                        "Something went wrong. Please check your connection and try again."}
+                  ))}
+                </div>
+              </div>
+
+              <div className="relative bg-[#152238] p-6 lg:w-1/2 sm:p-8">
+                <button
+                  type="button"
+                  onClick={() => setSelectedService(null)}
+                  className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:bg-[#E57A3B] hover:text-white"
+                  aria-label="Close service inquiry"
+                >
+                  ×
+                </button>
+                <h4 className="text-lg font-bold text-white">
+                  Inquire About This Service
+                </h4>
+                <p className="mt-1 text-xs text-slate-400">
+                  Direct route request for{" "}
+                  <span className="font-semibold text-[#E57A3B]">
+                    {selectedService.title}
+                  </span>
+                  .
+                </p>
+                {status === "success" ? (
+                  <div className="my-8 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center text-emerald-400">
+                    <p className="text-base font-bold">
+                      Inquiry Sent Successfully!
                     </p>
-                  )}
-                  <button
-                    type="submit"
-                    disabled={status === "loading"}
-                    className="w-full rounded-lg bg-orange-600 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-colors hover:bg-orange-500 disabled:opacity-50"
-                  >
-                    {status === "loading"
-                      ? "Sending Dispatch Request..."
-                      : "Send Freight Request →"}
-                  </button>
-                </form>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+                    <p className="mt-2 text-xs text-slate-300">
+                      Our freight dispatch team is reviewing your route
+                      requirements and will reply via email shortly.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedService(null)}
+                      className="mt-6 w-full rounded-lg bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-500"
+                    >
+                      Close Window
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                    <div>
+                      <label
+                        htmlFor="inquiry-name"
+                        className="block text-xs font-semibold uppercase text-slate-300"
+                      >
+                        Full Name
+                      </label>
+                      <input
+                        id="inquiry-name"
+                        type="text"
+                        name="name"
+                        required
+                        maxLength={FIELD_LIMITS.name}
+                        value={formState.name}
+                        onChange={handleInputChange}
+                        placeholder="Jane Doe"
+                        className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div>
+                        <label
+                          htmlFor="inquiry-email"
+                          className="block text-xs font-semibold uppercase text-slate-300"
+                        >
+                          Work Email
+                        </label>
+                        <input
+                          id="inquiry-email"
+                          type="email"
+                          name="email"
+                          required
+                          maxLength={FIELD_LIMITS.email}
+                          value={formState.email}
+                          onChange={handleInputChange}
+                          placeholder="jane@company.com"
+                          className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="inquiry-phone"
+                          className="block text-xs font-semibold uppercase text-slate-300"
+                        >
+                          Phone Number
+                        </label>
+                        <input
+                          id="inquiry-phone"
+                          type="tel"
+                          name="phone"
+                          required
+                          maxLength={FIELD_LIMITS.phone}
+                          value={formState.phone}
+                          onChange={handleInputChange}
+                          placeholder="(555) 000-0000"
+                          className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="inquiry-notes"
+                        className="block text-xs font-semibold uppercase text-slate-300"
+                      >
+                        Route &amp; Cargo Details
+                      </label>
+                      <textarea
+                        id="inquiry-notes"
+                        name="notes"
+                        rows={3}
+                        maxLength={FIELD_LIMITS.notes}
+                        value={formState.notes}
+                        onChange={handleInputChange}
+                        placeholder="Origin, destination, estimated weight, temperature constraints..."
+                        className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
+                      />
+                    </div>
+                    {status === "error" && (
+                      <p className="text-xs font-semibold text-red-400">
+                        {errorMessage ||
+                          "Something went wrong. Please check your connection and try again."}
+                      </p>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={status === "loading"}
+                      className="w-full rounded-lg bg-[#C25E28] py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-colors hover:bg-[#E57A3B] disabled:opacity-50"
+                    >
+                      {status === "loading"
+                        ? "Sending Dispatch Request..."
+                        : "Send Freight Request →"}
+                    </button>
+                  </form>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
