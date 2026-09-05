@@ -1,23 +1,36 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative my-12 overflow-hidden rounded-2xl bg-gradient-to-b from-white to-[#F7FAF9] px-6 py-20 shadow-[0_24px_60px_rgba(17,30,56,0.1)] sm:px-8 sm:py-24 lg:px-16 xl:px-24"
+      className="relative my-12 overflow-hidden rounded-2xl bg-cover bg-center px-6 py-20 shadow-[0_24px_60px_rgba(17,30,56,0.1)] sm:px-8 sm:py-24 lg:px-16 xl:px-24"
+      style={{ backgroundImage: "url('/about-bg.jfif')" }}
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="absolute inset-0 bg-white/55" aria-hidden="true" />
+      <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mb-16 flex justify-center">
-          <div className="relative h-28 w-28 overflow-hidden rounded-full bg-white shadow-[0_14px_30px_rgba(17,30,56,0.18)] ring-1 ring-[#D8E2DF] sm:h-36 sm:w-36">
+          <motion.div
+            className="relative h-28 w-28 overflow-hidden rounded-full bg-white shadow-[0_14px_30px_rgba(17,30,56,0.18)] ring-1 ring-[#D8E2DF] sm:h-36 sm:w-36"
+            initial={{ opacity: 0, scale: 0.8, rotateY: -18 }}
+            whileInView={{ opacity: 1, scale: 1, rotateY: -8 }}
+            whileHover={{ scale: 1.06, rotateY: 0, rotateX: -4 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            style={{ perspective: 600 }}
+          >
             <Image
-              src="/logo1.1.jfif"
+              src="/logo1.1.png"
               alt="Raheem Cargo Solutions LLC logo"
               fill
               sizes="(min-width: 640px) 144px, 112px"
               priority
-              className="object-cover"
+              className="object-contain p-1"
             />
-          </div>
+          </motion.div>
         </div>
 
         <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
@@ -42,7 +55,7 @@ export default function AboutSection() {
         </div>
 
         <div className="mt-16 grid gap-4 md:grid-cols-2">
-          <article className="rounded-xl border border-[#D8E2DF] bg-white/90 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
+          <article className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
             <span className="text-sm font-bold text-[#B85223]">01</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Hands-on transportation experience
@@ -52,7 +65,7 @@ export default function AboutSection() {
               both a company driver and an owner-operator.
             </p>
           </article>
-          <article className="rounded-xl border border-[#D8E2DF] bg-white/90 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
+          <article className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
             <span className="text-sm font-bold text-[#B85223]">02</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Direct market advantage
@@ -62,7 +75,7 @@ export default function AboutSection() {
               experience, not generic marketing research algorithms.
             </p>
           </article>
-          <article className="rounded-xl border border-[#D8E2DF] bg-white/90 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
+          <article className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
             <span className="text-sm font-bold text-[#B85223]">03</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Guaranteed asset capacity
@@ -72,7 +85,7 @@ export default function AboutSection() {
               help loads get picked up immediately.
             </p>
           </article>
-          <article className="rounded-xl border border-[#D8E2DF] bg-white/90 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
+          <article className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
             <span className="text-sm font-bold text-[#B85223]">04</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Commitment to quality
@@ -86,6 +99,15 @@ export default function AboutSection() {
 
         <div className="mt-20 grid gap-10 rounded-2xl bg-[#12343B] p-8 text-white shadow-[0_20px_45px_rgba(18,52,59,0.18)] sm:p-10 lg:grid-cols-[0.8fr_1.2fr] lg:p-12">
           <div>
+            <a
+              href="https://www.linkedin.com/in/quintin-galloway-675b922b9/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View Quint Galloway on LinkedIn"
+              className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#F4B395] bg-[#B85223] text-2xl font-black text-white shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition-transform hover:scale-105"
+            >
+              QG
+            </a>
             <p className="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-[#F4B395]">
               About the owner
             </p>

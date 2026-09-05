@@ -96,15 +96,15 @@ export default function FreightReputation() {
               Credentials
             </p>
             <p className="mt-2 text-white/80">
-              Licensed Freight Brokerage | SBA Registered | DBE Certified
+              Licensed Freight Brokerage | SBA Registered | MBE Certified
             </p>
             <a
-              href="https://www.linkedin.com/company/raheem-cargo-solutions-llc/"
+              href="https://www.linkedin.com/in/quintin-galloway-675b922b9/"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-3 inline-block font-semibold text-[#F4B395] transition-colors hover:text-white"
             >
-              Official LinkedIn Profile
+              Quint Galloway on LinkedIn
             </a>
           </div>
         </div>

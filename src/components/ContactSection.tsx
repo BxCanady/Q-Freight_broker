@@ -2,9 +2,11 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="bg-gradient-to-b from-white to-[#F7FAF9] px-6 py-24 sm:px-8 lg:px-16 xl:px-24"
+      className="relative overflow-hidden bg-cover bg-center px-6 py-24 sm:px-8 lg:px-16 xl:px-24"
+      style={{ backgroundImage: "url('/contact-bg.jpg')" }}
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="absolute inset-0 bg-white/70" aria-hidden="true" />
+      <div className="relative z-10 mx-auto max-w-7xl">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
           <div>
             <p className="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-[#B85223]">
@@ -71,7 +73,7 @@ export default function ContactSection() {
             </p>
           </div>
           <a
-            href="https://www.linkedin.com/company/raheem-cargo-solutions-llc/"
+            href="https://www.linkedin.com/in/quintin-galloway-675b922b9/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-lg bg-[#B85223] px-5 py-3 text-sm font-bold transition-colors hover:bg-[#913C14]"

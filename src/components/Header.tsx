@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
 const navigationItems = [
   { id: "home", label: "Home", href: "/#home" },
   { id: "about", label: "About Us", href: "/#about" },
+  { id: "services", label: "Services", href: "/#services" },
   {
     id: "customers-shippers",
     label: "Customers / Shippers",
@@ -19,7 +21,7 @@ const navigationItems = [
   },
   {
     id: "digital-store",
-    label: "Paycheck / Digital Store",
+    label: "Digital Store",
     href: "/#digital-store",
   },
   {
@@ -83,26 +85,30 @@ export default function Header() {
 
   return (
     <header className="w-full bg-white border-b border-gray-100 shadow-[0_2px_6px_rgba(107,114,128,0.25)] sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-auto md:h-20 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0 py-3 md:py-0">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
           href="/"
           className="flex items-center gap-2 flex-shrink-0 md:mr-6"
         >
-          <div className="w-23 h-22 flex-shrink-0 overflow-hidden rounded-full bg-gray-100 shadow-[0_10px_22px_rgba(17,30,56,0.32)] transition-transform duration-300 [transform:perspective(600px)_rotateY(-8deg)_rotateX(4deg)] hover:[transform:perspective(600px)_rotateY(0deg)_rotateX(0deg)]">
+          <motion.div
+            className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full bg-gray-200 p-0 shadow-[0_10px_22px_rgba(204,85,0,0.45)] sm:h-20 sm:w-20 md:h-[5.5rem] md:w-[5.75rem]"
+            initial={{ opacity: 0, scale: 0.8, rotateY: -18 }}
+            animate={{ opacity: 1, scale: 1, rotateY: -8 }}
+            whileHover={{ scale: 1.06, rotateY: 0, rotateX: -4 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            style={{ perspective: 600 }}
+          >
             <Image
-              src="/logo1.1.jfif"
+              src="/logo1.1.png"
               alt="rcs3pl Logo"
               width={100}
               height={100}
               priority
               unoptimized
-              className="object-cover w-full h-full"
+              className="h-full w-full object-contain"
             />
-          </div>
-          <span className="text-2xl font-extrabold text-red-600 tracking-tight">
-            rcs3pl
-          </span>
+          </motion.div>
         </Link>
 
         {/* Desktop Navigation Links */}
