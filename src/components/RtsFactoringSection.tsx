@@ -40,7 +40,7 @@ export default function RTSFactoringSectionWithLeadCapture() {
   return (
     <section
       id="rts-factoring"
-      className="relative my-12 overflow-hidden rounded-2xl bg-[var(--brand-navy)] px-5 py-16 text-white shadow-[0_24px_60px_rgba(17,30,56,0.22)] sm:px-8 lg:px-12"
+      className="section-reveal relative my-12 overflow-hidden rounded-2xl bg-[var(--brand-navy)] px-5 py-16 text-white shadow-[0_24px_60px_rgba(17,30,56,0.22)] sm:px-8 lg:px-12"
     >
       <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 border-l border-white/10 bg-[var(--brand-navy-light)]/35" />
 

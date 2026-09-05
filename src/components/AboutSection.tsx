@@ -7,7 +7,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative my-12 overflow-hidden rounded-2xl bg-cover bg-center px-6 py-20 shadow-[0_24px_60px_rgba(17,30,56,0.1)] sm:px-8 sm:py-24 lg:px-16 xl:px-24"
+      className="section-reveal relative my-12 overflow-hidden rounded-2xl bg-cover bg-center px-6 py-20 shadow-[0_24px_60px_rgba(17,30,56,0.1)] sm:px-8 sm:py-24 lg:px-16 xl:px-24"
       style={{ backgroundImage: "url('/about-bg.jfif')" }}
     >
       <div className="absolute inset-0 bg-white/55" aria-hidden="true" />
@@ -54,8 +54,24 @@ export default function AboutSection() {
           </p>
         </div>
 
-        <div className="mt-16 grid gap-4 md:grid-cols-2">
-          <article className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
+        <motion.div
+          className="mt-16 grid gap-4 md:grid-cols-2"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.2 } },
+          }}
+        >
+          <motion.article
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg"
+          >
             <span className="text-sm font-bold text-[#B85223]">01</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Hands-on transportation experience
@@ -64,8 +80,15 @@ export default function AboutSection() {
               RCS is led by an owner with more than 10 years of experience as
               both a company driver and an owner-operator.
             </p>
-          </article>
-          <article className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
+          </motion.article>
+          <motion.article
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg"
+          >
             <span className="text-sm font-bold text-[#B85223]">02</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Direct market advantage
@@ -74,8 +97,15 @@ export default function AboutSection() {
               Practical lane bidding and live quoting are built on real road
               experience, not generic marketing research algorithms.
             </p>
-          </article>
-          <article className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
+          </motion.article>
+          <motion.article
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg"
+          >
             <span className="text-sm font-bold text-[#B85223]">03</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Guaranteed asset capacity
@@ -84,8 +114,15 @@ export default function AboutSection() {
               Direct equipment access and an established, vetted carrier network
               help loads get picked up immediately.
             </p>
-          </article>
-          <article className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg">
+          </motion.article>
+          <motion.article
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="rounded-xl border border-[#D8E2DF] bg-white/60 p-7 shadow-[0_12px_30px_rgba(18,52,59,0.06)] transition-all hover:-translate-y-1 hover:border-[#F4B395] hover:shadow-lg"
+          >
             <span className="text-sm font-bold text-[#B85223]">04</span>
             <h3 className="mt-5 text-lg font-bold text-[#12343B]">
               Commitment to quality
@@ -94,8 +131,8 @@ export default function AboutSection() {
               We provide fair lane rates so cargo is delivered safely, legally,
               and on schedule.
             </p>
-          </article>
-        </div>
+          </motion.article>
+        </motion.div>
 
         <div className="mt-20 grid gap-10 rounded-2xl bg-[#12343B] p-8 text-white shadow-[0_20px_45px_rgba(18,52,59,0.18)] sm:p-10 lg:grid-cols-[0.8fr_1.2fr] lg:p-12">
           <div>

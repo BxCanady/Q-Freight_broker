@@ -2,7 +2,7 @@ export default function DigitalStoreSection() {
   return (
     <section
       id="digital-store"
-      className="bg-[#12343B] px-8 py-20 text-white lg:px-16 xl:px-24"
+      className="section-reveal bg-[#12343B] px-8 py-20 text-white lg:px-16 xl:px-24"
     >
       <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 md:flex-row md:items-center">
         <div>

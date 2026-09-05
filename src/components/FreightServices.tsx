@@ -132,7 +132,7 @@ export default function FreightServices() {
   return (
     <section
       id="services"
-      className="relative overflow-hidden rounded-2xl bg-cover bg-center px-4 py-16 sm:px-8 sm:py-24 lg:px-16 xl:px-24"
+      className="section-reveal relative overflow-hidden rounded-2xl bg-cover bg-center px-4 py-16 sm:px-8 sm:py-24 lg:px-16 xl:px-24"
       style={{ backgroundImage: "url('/fs_bg.jfif')" }}
     >
       <div

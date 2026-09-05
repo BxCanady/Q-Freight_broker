@@ -44,6 +44,27 @@ section[id] {
   scroll-margin-top: 6rem;
 }
 
+@keyframes section-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-reveal {
+  animation: section-reveal 0.9s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-reveal {
+    animation: none;
+  }
+}
+
 @media (max-width: 639px) and (prefers-reduced-motion: no-preference) {
   @keyframes mobile-service-float {
     0%,

@@ -59,7 +59,7 @@ export default function CustomersShippersSection() {
   return (
     <section
       id="customers-shippers"
-      className="relative my-12 overflow-hidden rounded-2xl bg-cover bg-center px-5 py-16 text-white shadow-[0_24px_60px_rgba(17,30,56,0.18)] sm:px-8 lg:px-12"
+      className="section-reveal relative my-12 overflow-hidden rounded-2xl bg-cover bg-center px-5 py-16 text-white shadow-[0_24px_60px_rgba(17,30,56,0.18)] sm:px-8 lg:px-12"
       style={{ backgroundImage: "url('/shipper_bg.jpg')" }}
     >
       <div

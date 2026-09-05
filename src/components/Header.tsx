@@ -73,15 +73,24 @@ export default function Header() {
     };
   }, []);
 
-  const handleNavigation = (id: string) => {
+  const handleNavigation = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    id: string,
+  ) => {
+    event.preventDefault();
     setActiveSection(id);
     setIsMenuOpen(false);
+    const target =
+      document.getElementById(id) ??
+      document.querySelector<HTMLElement>(`[data-section-id="${id}"]`);
+
+    target?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const linkClass = (id: string, mobile = false) =>
     mobile
-      ? `block rounded px-3 py-2 font-medium transition-colors ${activeSection === id ? "bg-red-50 text-red-700" : "text-red-600 hover:bg-gray-50 hover:text-[#E9652D]"}`
-      : `font-medium transition-colors ${activeSection === id ? "border-b-2 border-red-600 text-red-700" : "text-red-600 hover:text-[#E9652D]"}`;
+      ? `block rounded-lg border border-[#111e38] px-3 py-2 font-medium text-white transition-colors ${activeSection === id ? "bg-[#E9652D]" : "bg-[#111e38] hover:bg-[#1e2e4a]"}`
+      : `rounded-lg border border-[#111e38] bg-[#111e38] px-3 py-2 text-sm font-medium text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#1e2e4a] hover:shadow-md ${activeSection === id ? "border-[#E9652D] bg-[#E9652D]" : ""}`;
 
   return (
     <header className="w-full bg-white border-b border-gray-100 shadow-[0_2px_6px_rgba(107,114,128,0.25)] sticky top-0 z-50">
@@ -92,7 +101,7 @@ export default function Header() {
           className="flex items-center gap-2 flex-shrink-0 md:mr-6"
         >
           <motion.div
-            className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full bg-gray-200 p-0 shadow-[0_10px_22px_rgba(204,85,0,0.45)] sm:h-20 sm:w-20 md:h-[5.5rem] md:w-[5.75rem]"
+            className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full bg-transparent p-0 shadow-[0_10px_22px_rgba(204,85,0,0.45)] sm:h-20 sm:w-20 md:h-[5.5rem] md:w-[5.75rem]"
             initial={{ opacity: 0, scale: 0.8, rotateY: -18 }}
             animate={{ opacity: 1, scale: 1, rotateY: -8 }}
             whileHover={{ scale: 1.06, rotateY: 0, rotateX: -4 }}
@@ -106,7 +115,7 @@ export default function Header() {
               height={100}
               priority
               unoptimized
-              className="h-full w-full object-contain"
+              className="h-full w-full scale-[1.35] object-contain mix-blend-multiply"
             />
           </motion.div>
         </Link>
@@ -119,7 +128,7 @@ export default function Header() {
               href={item.href}
               className={linkClass(item.id)}
               aria-current={activeSection === item.id ? "page" : undefined}
-              onClick={() => handleNavigation(item.id)}
+              onClick={(event) => handleNavigation(event, item.id)}
             >
               {item.label}
             </Link>
@@ -166,7 +175,7 @@ export default function Header() {
               href={item.href}
               className={linkClass(item.id, true)}
               aria-current={activeSection === item.id ? "page" : undefined}
-              onClick={() => handleNavigation(item.id)}
+              onClick={(event) => handleNavigation(event, item.id)}
             >
               {item.label}
             </Link>

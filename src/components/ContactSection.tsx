@@ -2,7 +2,7 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden bg-cover bg-center px-6 py-24 sm:px-8 lg:px-16 xl:px-24"
+      className="section-reveal relative overflow-hidden bg-cover bg-center px-6 py-24 sm:px-8 lg:px-16 xl:px-24"
       style={{ backgroundImage: "url('/contact-bg.jpg')" }}
     >
       <div className="absolute inset-0 bg-white/70" aria-hidden="true" />

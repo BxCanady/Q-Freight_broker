@@ -24,7 +24,7 @@ const features = [
 export default function FreightReputation() {
   return (
     <>
-      <section className="bg-white py-16 sm:py-20">
+      <section className="section-reveal bg-white py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-6 lg:px-8">
           <div className="mb-10 text-center">
             <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-[#E9652D]">
