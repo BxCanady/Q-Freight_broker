@@ -88,7 +88,7 @@ export default function FreightReputation() {
               Base locations
             </p>
             <p className="mt-2 text-white/80">
-              Mobile, Alabama &amp; Shreveport, Louisiana
+              Mobile, Alabama &amp; Baton Rouge, Louisiana
             </p>
           </div>
           <div>
