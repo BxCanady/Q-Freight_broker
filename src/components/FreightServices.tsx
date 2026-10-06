@@ -8,6 +8,8 @@ import {
   type FormEvent,
 } from "react";
 import Image from "next/image";
+import { X } from "lucide-react";
+import { createPortal } from "react-dom";
 import {
   motion,
   AnimatePresence,
@@ -331,199 +333,212 @@ export default function FreightServices() {
       </div>
 
       {/* Modal with AnimatePresence & Outside Click Handling */}
-      <AnimatePresence>
-        {selectedService && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-950/80 p-4 backdrop-blur-md"
-          >
-            <motion.div
-              ref={modalRef}
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="relative my-8 flex w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-slate-700 bg-[#1B2A4A] shadow-2xl lg:flex-row"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="service-modal-title"
-            >
-              <div className="relative flex min-h-80 flex-col justify-between overflow-hidden p-6 lg:w-1/2 sm:p-8">
-                {/* Clearer background image layer with dedicated image sharpness styling */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center contrast-125 brightness-105"
-                  style={{ backgroundImage: `url(${selectedService.bgImage})` }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#152238]/95 via-[#1B2A4A]/60 to-slate-950/20" />
-                <div className="relative z-10">
-                  <span className="inline-block rounded-md border border-[#E57A3B]/30 bg-[#E57A3B]/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#E57A3B]">
-                    {selectedService.code}
-                  </span>
-                  <h3
-                    id="service-modal-title"
-                    className="mt-4 text-2xl font-extrabold text-white sm:text-3xl"
-                  >
-                    {selectedService.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-200 drop-shadow">
-                    {selectedService.longDesc}
-                  </p>
-                </div>
-                <div className="relative z-10 mt-6 space-y-2">
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-300">
-                    Key Capabilities
-                  </p>
-                  {selectedService.specs.map((spec) => (
-                    <div
-                      key={spec}
-                      className="flex items-center gap-2 text-xs font-medium text-white drop-shadow"
-                    >
-                      <span className="text-[#E57A3B]">✓</span>
-                      {spec}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="relative bg-[#152238] p-6 lg:w-1/2 sm:p-8">
-                <button
-                  type="button"
-                  onClick={() => setSelectedService(null)}
-                  className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:bg-[#E57A3B] hover:text-white"
-                  aria-label="Close service inquiry"
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {selectedService && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-950/80 p-4 backdrop-blur-md sm:items-center"
+              >
+                <motion.div
+                  ref={modalRef}
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  className="relative my-auto flex max-h-[calc(100dvh-2rem)] w-full max-w-4xl flex-col overflow-y-auto overscroll-contain rounded-2xl border border-slate-700 bg-[#1B2A4A] shadow-2xl"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="service-modal-title"
                 >
-                  ×
-                </button>
-                <h4 className="text-lg font-bold text-white">
-                  Inquire About This Service
-                </h4>
-                <p className="mt-1 text-xs text-slate-400">
-                  Direct route request for{" "}
-                  <span className="font-semibold text-[#E57A3B]">
-                    {selectedService.title}
-                  </span>
-                  .
-                </p>
-                {status === "success" ? (
-                  <div className="my-8 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center text-emerald-400">
-                    <p className="text-base font-bold">
-                      Inquiry Sent Successfully!
-                    </p>
-                    <p className="mt-2 text-xs text-slate-300">
-                      Our freight dispatch team is reviewing your route
-                      requirements and will reply via email shortly.
-                    </p>
+                  <div className="sticky top-0 z-20 flex h-12 shrink-0 justify-end bg-[#1B2A4A] p-2">
                     <button
                       type="button"
                       onClick={() => setSelectedService(null)}
-                      className="mt-6 w-full rounded-lg bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-500"
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-300 transition-colors hover:bg-[#E57A3B] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E57A3B]"
+                      aria-label="Close service inquiry"
                     >
-                      Close Window
+                      <X size={18} aria-hidden="true" />
                     </button>
                   </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-                    <div>
-                      <label
-                        htmlFor="inquiry-name"
-                        className="block text-xs font-semibold uppercase text-slate-300"
-                      >
-                        Full Name
-                      </label>
-                      <input
-                        id="inquiry-name"
-                        type="text"
-                        name="name"
-                        required
-                        maxLength={FIELD_LIMITS.name}
-                        value={formState.name}
-                        onChange={handleInputChange}
-                        placeholder="Jane Doe"
-                        className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
+                  <div className="flex flex-col lg:flex-row">
+                    <div className="relative flex min-h-80 flex-col justify-between overflow-hidden p-6 lg:w-1/2 sm:p-8">
+                      {/* Clearer background image layer with dedicated image sharpness styling */}
+                      <div
+                        className="absolute inset-0 bg-cover bg-center contrast-125 brightness-105"
+                        style={{
+                          backgroundImage: `url(${selectedService.bgImage})`,
+                        }}
                       />
-                    </div>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <div>
-                        <label
-                          htmlFor="inquiry-email"
-                          className="block text-xs font-semibold uppercase text-slate-300"
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#152238]/95 via-[#1B2A4A]/60 to-slate-950/20" />
+                      <div className="relative z-10">
+                        <span className="inline-block rounded-md border border-[#E57A3B]/30 bg-[#E57A3B]/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#E57A3B]">
+                          {selectedService.code}
+                        </span>
+                        <h3
+                          id="service-modal-title"
+                          className="mt-4 text-2xl font-extrabold text-white sm:text-3xl"
                         >
-                          Work Email
-                        </label>
-                        <input
-                          id="inquiry-email"
-                          type="email"
-                          name="email"
-                          required
-                          maxLength={FIELD_LIMITS.email}
-                          value={formState.email}
-                          onChange={handleInputChange}
-                          placeholder="jane@company.com"
-                          className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
-                        />
+                          {selectedService.title}
+                        </h3>
+                        <p className="mt-3 text-sm leading-relaxed text-slate-200 drop-shadow">
+                          {selectedService.longDesc}
+                        </p>
                       </div>
-                      <div>
-                        <label
-                          htmlFor="inquiry-phone"
-                          className="block text-xs font-semibold uppercase text-slate-300"
-                        >
-                          Phone Number
-                        </label>
-                        <input
-                          id="inquiry-phone"
-                          type="tel"
-                          name="phone"
-                          required
-                          maxLength={FIELD_LIMITS.phone}
-                          value={formState.phone}
-                          onChange={handleInputChange}
-                          placeholder="(555) 000-0000"
-                          className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
-                        />
+                      <div className="relative z-10 mt-6 space-y-2">
+                        <p className="text-xs font-bold uppercase tracking-wider text-slate-300">
+                          Key Capabilities
+                        </p>
+                        {selectedService.specs.map((spec) => (
+                          <div
+                            key={spec}
+                            className="flex items-center gap-2 text-xs font-medium text-white drop-shadow"
+                          >
+                            <span className="text-[#E57A3B]">✓</span>
+                            {spec}
+                          </div>
+                        ))}
                       </div>
                     </div>
-                    <div>
-                      <label
-                        htmlFor="inquiry-notes"
-                        className="block text-xs font-semibold uppercase text-slate-300"
-                      >
-                        Route &amp; Cargo Details
-                      </label>
-                      <textarea
-                        id="inquiry-notes"
-                        name="notes"
-                        rows={3}
-                        maxLength={FIELD_LIMITS.notes}
-                        value={formState.notes}
-                        onChange={handleInputChange}
-                        placeholder="Origin, destination, estimated weight, temperature constraints..."
-                        className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
-                      />
-                    </div>
-                    {status === "error" && (
-                      <p className="text-xs font-semibold text-red-400">
-                        {errorMessage ||
-                          "Something went wrong. Please check your connection and try again."}
+
+                    <div className="relative bg-[#152238] p-6 lg:w-1/2 sm:p-8">
+                      <h4 className="text-lg font-bold text-white">
+                        Inquire About This Service
+                      </h4>
+                      <p className="mt-1 text-xs text-slate-400">
+                        Direct route request for{" "}
+                        <span className="font-semibold text-[#E57A3B]">
+                          {selectedService.title}
+                        </span>
+                        .
                       </p>
-                    )}
-                    <button
-                      type="submit"
-                      disabled={status === "loading"}
-                      className="w-full rounded-lg bg-[#C25E28] py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-colors hover:bg-[#E57A3B] disabled:opacity-50"
-                    >
-                      {status === "loading"
-                        ? "Sending Dispatch Request..."
-                        : "Send Freight Request →"}
-                    </button>
-                  </form>
-                )}
-              </div>
-            </motion.div>
-          </motion.div>
+                      {status === "success" ? (
+                        <div className="my-8 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center text-emerald-400">
+                          <p className="text-base font-bold">
+                            Inquiry Sent Successfully!
+                          </p>
+                          <p className="mt-2 text-xs text-slate-300">
+                            Our freight dispatch team is reviewing your route
+                            requirements and will reply via email shortly.
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedService(null)}
+                            className="mt-6 w-full rounded-lg bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-500"
+                          >
+                            Close Window
+                          </button>
+                        </div>
+                      ) : (
+                        <form
+                          onSubmit={handleSubmit}
+                          className="mt-6 space-y-4"
+                        >
+                          <div>
+                            <label
+                              htmlFor="inquiry-name"
+                              className="block text-xs font-semibold uppercase text-slate-300"
+                            >
+                              Full Name
+                            </label>
+                            <input
+                              id="inquiry-name"
+                              type="text"
+                              name="name"
+                              required
+                              maxLength={FIELD_LIMITS.name}
+                              value={formState.name}
+                              onChange={handleInputChange}
+                              placeholder="Jane Doe"
+                              className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
+                            />
+                          </div>
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                              <label
+                                htmlFor="inquiry-email"
+                                className="block text-xs font-semibold uppercase text-slate-300"
+                              >
+                                Work Email
+                              </label>
+                              <input
+                                id="inquiry-email"
+                                type="email"
+                                name="email"
+                                required
+                                maxLength={FIELD_LIMITS.email}
+                                value={formState.email}
+                                onChange={handleInputChange}
+                                placeholder="jane@company.com"
+                                className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
+                              />
+                            </div>
+                            <div>
+                              <label
+                                htmlFor="inquiry-phone"
+                                className="block text-xs font-semibold uppercase text-slate-300"
+                              >
+                                Phone Number
+                              </label>
+                              <input
+                                id="inquiry-phone"
+                                type="tel"
+                                name="phone"
+                                required
+                                maxLength={FIELD_LIMITS.phone}
+                                value={formState.phone}
+                                onChange={handleInputChange}
+                                placeholder="(555) 000-0000"
+                                className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label
+                              htmlFor="inquiry-notes"
+                              className="block text-xs font-semibold uppercase text-slate-300"
+                            >
+                              Route &amp; Cargo Details
+                            </label>
+                            <textarea
+                              id="inquiry-notes"
+                              name="notes"
+                              rows={3}
+                              maxLength={FIELD_LIMITS.notes}
+                              value={formState.notes}
+                              onChange={handleInputChange}
+                              placeholder="Origin, destination, estimated weight, temperature constraints..."
+                              className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-xs text-white placeholder-slate-500 focus:border-[#E57A3B] focus:outline-none"
+                            />
+                          </div>
+                          {status === "error" && (
+                            <p className="text-xs font-semibold text-red-400">
+                              {errorMessage ||
+                                "Something went wrong. Please check your connection and try again."}
+                            </p>
+                          )}
+                          <button
+                            type="submit"
+                            disabled={status === "loading"}
+                            className="w-full rounded-lg bg-[#C25E28] py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-colors hover:bg-[#E57A3B] disabled:opacity-50"
+                          >
+                            {status === "loading"
+                              ? "Sending Dispatch Request..."
+                              : "Send Freight Request →"}
+                          </button>
+                        </form>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
     </section>
   );
 }

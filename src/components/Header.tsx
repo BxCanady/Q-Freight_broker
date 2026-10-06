@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
+import CoinLogo from "./CoinLogo";
 
 const navigationItems = [
   { id: "home", label: "Home", href: "/#home" },
@@ -98,26 +97,10 @@ export default function Header() {
         {/* Logo */}
         <Link
           href="/"
+          aria-label="RCS Freight home"
           className="flex items-center gap-2 flex-shrink-0 md:mr-6"
         >
-          <motion.div
-            className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full bg-transparent p-0 shadow-[0_10px_22px_rgba(204,85,0,0.45)] sm:h-20 sm:w-20 md:h-[5.5rem] md:w-[5.75rem]"
-            initial={{ opacity: 0, scale: 0.8, rotateY: -18 }}
-            animate={{ opacity: 1, scale: 1, rotateY: -8 }}
-            whileHover={{ scale: 1.06, rotateY: 0, rotateX: -4 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            style={{ perspective: 600 }}
-          >
-            <Image
-              src="/logo1.1.png"
-              alt="rcs3pl Logo"
-              width={100}
-              height={100}
-              priority
-              unoptimized
-              className="h-full w-full scale-[1.35] object-contain mix-blend-multiply"
-            />
-          </motion.div>
+          <CoinLogo />
         </Link>
 
         {/* Desktop Navigation Links */}
